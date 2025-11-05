@@ -18,12 +18,15 @@
    npx expo start
    ```
 
-
-# libs
-
-* Toast Message 
-
+# Toast Message 
 ```bash
 npm install react-native-toast-message
-
+```
+# supabase
+```bash
+npm install @supabase/supabase-js
+```
+# storage
+```bash
+ npx expo install @react-native-async-storage/async-storage
 ```
