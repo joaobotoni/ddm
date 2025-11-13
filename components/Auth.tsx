@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Alert, StyleSheet, TextInput, View, Button } from 'react-native'
+import { Alert, StyleSheet, TextInput, View, Button, TouchableOpacity, Text } from 'react-native'
 import { supabase } from '../lib/supabase'
+import firebase from '../lib/firebase'
 
 export default function Auth() {
   const [email, setEmail] = useState('')
@@ -33,6 +34,24 @@ export default function Auth() {
     setLoading(false)
   }
 
+  async function signInWithGoogle() {
+    setLoading(true)
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+    })
+    if (error) Alert.alert(error.message)
+    setLoading(false)
+  }
+
+  async function signInWithGithub() {
+    setLoading(true)
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'github',
+    })
+    if (error) Alert.alert(error.message)
+    setLoading(false)
+  }
+
   return (
     <View style={styles.container}>
       <View style={[styles.verticallySpaced, styles.mt20]}>
@@ -41,6 +60,7 @@ export default function Auth() {
           value={email}
           placeholder="email@address.com"
           autoCapitalize={'none'}
+          style={styles.input}
         />
       </View>
       <View style={styles.verticallySpaced}>
@@ -50,6 +70,7 @@ export default function Auth() {
           secureTextEntry={true}
           placeholder="Password"
           autoCapitalize={'none'}
+          style={styles.input}
         />
       </View>
       <View style={[styles.verticallySpaced, styles.mt20]}>
@@ -58,6 +79,21 @@ export default function Auth() {
       <View style={styles.verticallySpaced}>
         <Button title="Sign up" disabled={loading} onPress={() => signUpWithEmail()} />
       </View>
+
+      <View style={styles.divider}>
+        <View style={styles.dividerLine} />
+        <Text style={styles.dividerText}>OR</Text>
+        <View style={styles.dividerLine} />
+      </View>
+
+      <TouchableOpacity
+        style={[styles.socialButton, styles.googleButton]}
+        onPress={() => signInWithGoogle()}
+        disabled={loading}
+      >
+        <Text style={styles.socialButtonText}>🔵 Continue with Google</Text>
+      </TouchableOpacity>
+
     </View>
   )
 }
@@ -74,5 +110,44 @@ const styles = StyleSheet.create({
   },
   mt20: {
     marginTop: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    padding: 10,
+    borderRadius: 5,
+  },
+  divider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#ddd',
+  },
+  dividerText: {
+    marginHorizontal: 10,
+    color: '#666',
+    fontWeight: '500',
+  },
+  socialButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 12,
+    borderRadius: 5,
+    marginVertical: 6,
+  },
+  googleButton: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  socialButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
   },
 })

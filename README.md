@@ -30,3 +30,13 @@ npm install @supabase/supabase-js
 ```bash
  npx expo install @react-native-async-storage/async-storage
 ```
+
+# firebase
+```bash
+ npm install firebase
+```
+
+# firebase-tools
+```bash
+ npm install -g firebase-tools
+```
